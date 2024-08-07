@@ -13,4 +13,7 @@ import 'package:pocket_hrms/modules/timesheet/index.dart' as timesheet;
 import 'package:pocket_hrms/modules/training/index.dart' as training;
 import 'package:pocket_hrms/modules/travel/index.dart' as travel;
 
-final List<GetPage> appPages = [...authentication.appPages];
+final List<GetPage> appPages = [
+  ...authentication.appPages,
+  ...employee_profile.appPages
+];

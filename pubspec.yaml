@@ -59,6 +59,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+# deferred-components
+# deferred-components:
+#     - name: bn_in
+#       libraries:
+#         - lib/languages/bn_in.dart
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
