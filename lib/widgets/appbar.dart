@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocket_hrms/services/localization.dart';
 import 'package:pocket_hrms/util/config.dart';
+import 'package:pocket_hrms/mixins/shared_preferences_mixin.dart';
 
-// ignore: must_be_immutable
-class AppBarView extends StatelessWidget implements PreferredSizeWidget {
+class AppBarController extends GetxController with SharedPreferencesMixin {
+  var selectedLang = ''.obs;
+
+  getsavedLanguage() async {
+    selectedLang.value = (await getValue('LANGUAGE')) ?? 'English';
+  }
+
+  @override
+  void onInit() {
+    getsavedLanguage();
+    super.onInit();
+  }
+
   final Config config = Config();
 
-  var selectedLang = 'English';
   var languagesSet = [
     'English',
     'हिन्दी',
@@ -18,11 +29,17 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
     'ಕನ್ನಡ' // Kannada
   ];
 
-  void changeLanguage(String newLanguage) {
-    selectedLang = newLanguage;
-    print(newLanguage);
+  Future<void> changeLanguage(String newLanguage) async {
     LocalizationService().changeLocale(newLanguage);
+    getsavedLanguage();
   }
+}
+
+// ignore: must_be_immutable
+class AppBarView extends StatelessWidget
+    with SharedPreferencesMixin
+    implements PreferredSizeWidget {
+  final AppBarController AppBarCtrl = Get.put(AppBarController());
 
   AppBarView({super.key});
 
@@ -30,16 +47,17 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         title: Obx(() => Text(
-              config.pageTitle.value.tr.toString().toUpperCase(),
+              AppBarCtrl.config.pageTitle.value.tr.toString().toUpperCase(),
               style: const TextStyle(color: Colors.white),
             )),
         iconTheme: const IconThemeData(color: Colors.white),
+        elevation: 12,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 0, 81, 255),
-                Color.fromARGB(255, 48, 34, 255),
+                Color(0xFF005C97),
+                Color(0xFF363795),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -50,17 +68,22 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
           PopupMenuButton<String>(
             icon:
                 const Icon(Icons.translate), // The icon that triggers the menu
-            onSelected: (String result) {
-              // Handle the selected value
-              print('Selected: $result');
-            },
+            onSelected: (String result) {},
             itemBuilder: (BuildContext context) =>
-                languagesSet.map((String item) {
+                AppBarCtrl.languagesSet.map((String item) {
               return PopupMenuItem<String>(
-                onTap: () => {changeLanguage(item)},
+                onTap: () => {AppBarCtrl.changeLanguage(item)},
                 child: Row(
                   children: [
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
+                    // ignore: unrelated_type_equality_checks
+                    (item == AppBarCtrl.selectedLang.value)
+                        ? const Icon(
+                            Icons.check,
+                            color: Colors.black,
+                          )
+                        : const SizedBox(width: 0),
+                    const SizedBox(width: 4),
                     Text(item),
                   ],
                 ),

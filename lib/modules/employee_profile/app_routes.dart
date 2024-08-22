@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'binding.dart';
 import './view/dashboard.dart';
 

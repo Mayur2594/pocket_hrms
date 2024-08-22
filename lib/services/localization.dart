@@ -2,36 +2,22 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pocket_hrms/languages/index.dart';
+import 'package:pocket_hrms/mixins/shared_preferences_mixin.dart';
 
-class LocalizationService extends Translations {
+class LocalizationService extends Translations with SharedPreferencesMixin {
   static final locale = Locale('en', 'US');
   static final fallbackLocale = Locale('en', 'US');
 
-  Locale? getSavedLocale() {
-    var lang = "English";
-    print('Selected Lang: ${getLocaleFromLanguage(lang)}');
-    return getLocaleFromLanguage(lang);
-  }
-
-  String getSavedLanguageString() {
-    var lang = "English";
-    return lang;
-  }
-
-  // Supported languages
-  // Needs to be same order with locales
   static final langs = [
     'English',
-    'हिन्दी',
-    'मराठी',
+    'हिन्दी', //hindi
+    'मराठी', // marathi
     'தமிழ்', // tamil
     'తెలుగు', // telugu
     'বাংলা', // bangla
     'ಕನ್ನಡ' // Kannada
   ];
 
-  // Supported locales
-  // Needs to be same order with langs
   static final locales = [
     Locale('en', 'US'),
     Locale('hi', 'IN'),
@@ -41,6 +27,28 @@ class LocalizationService extends Translations {
     Locale('bn', 'IN'),
     Locale('kn', 'IN'),
   ];
+
+  var selectedLanuage = '';
+
+  Future<Locale> getSavedLocale() async {
+    String langCode = await getValue('LANGUAGE') ?? 'English';
+    return _localeFromString(langCode);
+  }
+
+  static Locale _localeFromString(String lang) {
+    for (int i = 0; i < langs.length; i++) {
+      if (langs[i].toLowerCase().contains(lang.toLowerCase())) {
+        return locales[i];
+      }
+    }
+    return locales.first;
+  }
+
+  void changeLocale(String lang) async {
+    final locale = _localeFromString(lang);
+    Get.updateLocale(locale);
+    await saveValue('LANGUAGE', lang);
+  }
 
   // Keys and their translations
   // Translations are separated maps in `lang` file
@@ -54,27 +62,4 @@ class LocalizationService extends Translations {
         'bn_IN': LanguagesSet().langBn, // bengali
         'kn_IN': LanguagesSet().langKn, // kannada
       };
-
-  // Gets locale from language, and updates the locale
-  void changeLocale(String lang) async {
-    final locale = getLocaleFromLanguage(lang);
-    Get.updateLocale(locale);
-  }
-
-  // Finds language in `langs` list and returns it as Locale
-  Locale getLocaleFromLanguage(String lang) {
-    try {
-      var localLang = null;
-      langs.asMap().entries.map((entry) {
-        int index = entry.key;
-        String language = entry.value;
-        if (language == lang) {
-          localLang = locales[index];
-        }
-      }).toList();
-      return localLang;
-    } catch (ex) {
-      return Locale('en', 'US');
-    }
-  }
 }

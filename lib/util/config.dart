@@ -10,7 +10,7 @@ class Config {
   Config._internal();
 
   static const String baseUrl = '';
-  var pageTitle = 'Home'.obs;
+  var pageTitle = 'Pocket HRMS'.obs;
 
   void setPageTitle(String title) {
     pageTitle.value = title;
