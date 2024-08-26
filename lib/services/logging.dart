@@ -41,4 +41,21 @@ class LoggingService {
       print('Failed to log error: $e');
     }
   }
+
+  Future<void> saveContentInlocalFiles(
+      String directoryName, String filename, String content) async {
+    try {
+      // Get the directory to store the log file
+      final folder = await createDirectory(directoryName.toString().trim());
+      final path = '$folder/$filename';
+      // Open the file in append mode
+      final file = File(path).openWrite(mode: FileMode.append);
+      file.write('$content\n');
+      // Close the file
+      await file.close();
+    } catch (e) {
+      // If logging fails, print to console as a fallback
+      print('Failed to log error: $e');
+    }
+  }
 }

@@ -1,10 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pocket_hrms/modules/employee_profile/controller/attendance_punch.dart';
-import 'package:pocket_hrms/widgets/appbar.dart';
-import 'package:pocket_hrms/widgets/appdrawer.dart';
+import 'package:pocket_hrms/widgets/googlemap.dart';
+import 'package:pocket_hrms/widgets/shimmers.dart';
 
 class PunchCameraView extends StatelessWidget {
   final CameraDescription camera;
@@ -69,7 +70,7 @@ class PunchCameraView extends StatelessWidget {
                           ),
                         ),
                         Positioned.fill(
-                          top: 500,
+                          top: 400,
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
@@ -177,11 +178,30 @@ class PunchCameraView extends StatelessWidget {
                                 const Divider(),
                                 Container(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    "Address: ${PunchCtrl.LocationDetails.isNotEmpty ? PunchCtrl.LocationDetails.value['address'] : "Fetching Address"}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w700),
-                                  ),
+                                  child: PunchCtrl.LocationDetails.isNotEmpty
+                                      ? Text(
+                                          "Address: ${PunchCtrl.LocationDetails.value['address']}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )
+                                      : SingleLineShimmer(),
+                                ),
+                                Container(
+                                  child: PunchCtrl.LocationDetails
+                                              .value['latitude'] !=
+                                          null
+                                      ? MarkersAndRadiusGmapView(
+                                          markers: PunchCtrl.markers,
+                                          circles: PunchCtrl.circles,
+                                          initialPosition: LatLng(
+                                              PunchCtrl.LocationDetails
+                                                  .value['latitude'],
+                                              PunchCtrl.LocationDetails
+                                                  .value['longitude']),
+                                        )
+                                      : SingleBoxShimmer(),
+                                  height: 175,
+                                  padding: EdgeInsets.all(4.0),
                                 ),
                               ],
                             ),

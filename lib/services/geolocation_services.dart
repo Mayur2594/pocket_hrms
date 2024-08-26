@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 import 'dart:math' as math;
 import 'package:pocket_hrms/mixins/shared_preferences_mixin.dart';
 import 'package:pocket_hrms/services/logging.dart';
@@ -117,6 +118,7 @@ class GeolocationServices with SharedPreferencesMixin {
     return s / 1000; // Return distance in kilometers
   }
 
+  static double maxSpeedThreshold = 50;
   calculateTravelledDistance(Position position) async {
     try {
       var oldPosition = await getValue("OLDGPSPOSITION");
@@ -126,17 +128,33 @@ class GeolocationServices with SharedPreferencesMixin {
       List<Position> PositionsRecords = [];
       if (oldPosition != null) {
         Position lastPosition = json.decode(oldPosition.toString());
-        var newPos = {"lat": position.latitude, "lon": position.longitude};
-        var oldPos = {
-          "lat": lastPosition.latitude,
-          "lon": lastPosition.longitude
-        };
-        var calculatedDistance = vincentyDistance(newPos, oldPos);
-        if (SavedDistance != null) {
-          distance = double.parse(SavedDistance);
-          distance = distance + calculatedDistance;
-        } else {
-          distance = distance + calculatedDistance;
+
+        var validatedDistance = Geolocator.distanceBetween(
+          lastPosition.latitude,
+          lastPosition.longitude,
+          position.latitude,
+          position.longitude,
+        );
+
+        final timeDifference = position.timestamp
+            .difference(DateTime.fromMillisecondsSinceEpoch(
+                lastPosition.timestamp as int))
+            .inSeconds;
+
+        final speed = validatedDistance / timeDifference;
+        if (speed <= maxSpeedThreshold) {
+          var newPos = {"lat": position.latitude, "lon": position.longitude};
+          var oldPos = {
+            "lat": lastPosition.latitude,
+            "lon": lastPosition.longitude
+          };
+          var calculatedDistance = vincentyDistance(newPos, oldPos);
+          if (SavedDistance != null) {
+            distance = double.parse(SavedDistance);
+            distance = distance + calculatedDistance;
+          } else {
+            distance = distance + calculatedDistance;
+          }
         }
       }
 
@@ -152,6 +170,11 @@ class GeolocationServices with SharedPreferencesMixin {
           "POSITIONSLIST", json.encode(PositionsRecords).toString());
       await saveValue("DISTANCE", distance.toString());
       await saveValue("OLDGPSPOSITION", json.encode(position));
+      String formattedDate = DateFormat('dd_MM_yyyy').format(DateTime.now());
+      await LoggingService().saveContentInlocalFiles(
+          "gps_locations",
+          "trip_$formattedDate.txt",
+          "${json.encode(position)} \n ${distance.toString()}");
     } catch (error, stackTrace) {
       await LoggingService().logErrorToFile(error, stackTrace);
     }

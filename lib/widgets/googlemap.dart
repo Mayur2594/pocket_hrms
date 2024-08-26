@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pocket_hrms/services/localization.dart';
-import 'package:pocket_hrms/util/config.dart';
-import 'package:pocket_hrms/mixins/shared_preferences_mixin.dart';
 
-class GoogleMapController extends GetxController with SharedPreferencesMixin {
-  var markers = <Marker>[].obs;
-  var circle = <Circle>[].obs;
-  Position? currentPosition;
-}
+class GmapView extends StatelessWidget implements PreferredSizeWidget {
+  final Set<Marker> markers;
+  final Set<Circle> circles;
+  final Set<Polyline> polylines;
+  final LatLng initialPosition;
 
-class GmapView extends StatelessWidget
-    with SharedPreferencesMixin
-    implements PreferredSizeWidget {
-  final GoogleMapController GoogleMapCtrl = Get.put(GoogleMapController());
-
-  GmapView({super.key});
+  GmapView({
+    Key? key,
+    this.markers = const {},
+    this.circles = const {},
+    this.polylines = const {},
+    required this.initialPosition,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +21,49 @@ class GmapView extends StatelessWidget
       children: [
         GoogleMap(
             mapType: MapType.terrain,
-            markers: GoogleMapCtrl.markers.toSet(),
-            circles: GoogleMapCtrl.circle.toSet(),
-            initialCameraPosition: CameraPosition(
-                zoom: 16,
-                target: LatLng(GoogleMapCtrl.currentPosition!.latitude,
-                    GoogleMapCtrl.currentPosition!.longitude)))
+            markers: markers,
+            circles: circles,
+            polylines: polylines,
+            initialCameraPosition:
+                CameraPosition(zoom: 12, target: initialPosition))
       ],
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class MarkersOnlyGmapView extends GmapView {
+  MarkersOnlyGmapView({
+    Key? key,
+    required Set<Marker> markers,
+    required LatLng initialPosition,
+  }) : super(key: key, markers: markers, initialPosition: initialPosition);
+}
+
+class MarkersAndRadiusGmapView extends GmapView {
+  MarkersAndRadiusGmapView({
+    Key? key,
+    required Set<Marker> markers,
+    required Set<Circle> circles,
+    required LatLng initialPosition,
+  }) : super(
+            key: key,
+            markers: markers,
+            circles: circles,
+            initialPosition: initialPosition);
+}
+
+class MarkersAndPolylinesGmapView extends GmapView {
+  MarkersAndPolylinesGmapView({
+    Key? key,
+    required Set<Marker> markers,
+    required Set<Polyline> polylines,
+    required LatLng initialPosition,
+  }) : super(
+            key: key,
+            markers: markers,
+            polylines: polylines,
+            initialPosition: initialPosition);
 }

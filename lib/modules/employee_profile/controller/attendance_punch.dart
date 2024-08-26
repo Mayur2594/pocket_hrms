@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pocket_hrms/services/permissions_handler.dart';
 import 'package:pocket_hrms/services/geolocation_services.dart';
 
@@ -43,10 +44,52 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   var LocationDetails = {}.obs;
+
+  var markers = <Marker>{}.obs;
+  var circles = <Circle>{}.obs;
+  var initialPosition = LatLng(0, 0).obs;
+
+  // Method to add a marker
+  void addMarker(Marker marker) {
+    markers.add(marker);
+  }
+
+  // Method to add a circle
+  void addCircle(Circle circle) {
+    circles.add(circle);
+  }
+
+  void updateInitialPosition(LatLng position) {
+    initialPosition.value = position;
+  }
+
   getCurrentLocation() async {
     var CurrentGPLocation =
         await GeolocationServices().getCurrentGPSLocation(true, false);
     LocationDetails.value = json.decode(CurrentGPLocation.toString());
+
+    initialPosition.value = LatLng(
+        LocationDetails.value['latitude'], LocationDetails.value['longitude']);
+
+    markers.add(
+      Marker(
+        markerId: MarkerId('marker_1'),
+        position: LatLng(LocationDetails.value['latitude'],
+            LocationDetails.value['longitude']),
+      ),
+    );
+
+    circles.add(
+      Circle(
+        circleId: CircleId('circle_1'),
+        center: LatLng(LocationDetails.value['latitude'],
+            LocationDetails.value['longitude']),
+        radius: 1000, // Radius in meters
+        strokeColor: Colors.red,
+        strokeWidth: 2,
+        fillColor: Colors.red.withOpacity(0.3),
+      ),
+    );
   }
 
   Future<XFile> takePicture() async {
