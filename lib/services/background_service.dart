@@ -136,14 +136,14 @@ class BackgroundService with SharedPreferencesMixin {
           serviceInstace.setForegroundNotificationInfo(
             title: "Tracking From Trip",
             content:
-                "Update ${DateTime.now().toIso8601String()}\n Location: ${await BackgroundService.getCurrentGeoloaction(false)}",
+                "Update ${DateTime.now().toIso8601String()}\n Location: ${await BackgroundService.getCurrentGeoloaction(false, true)}",
           );
         }
         serviceInstace.invoke(
           'update',
           {
             "current_date":
-                "${DateTime.now().toIso8601String()}\n Current Location: ${await BackgroundService.getCurrentGeoloaction(false)}",
+                "${DateTime.now().toIso8601String()}\n Current Location: ${await BackgroundService.getCurrentGeoloaction(false, true)}",
           },
         );
       });
@@ -160,14 +160,14 @@ class BackgroundService with SharedPreferencesMixin {
           serviceInstace.setForegroundNotificationInfo(
             title: "Tracking From Geo Track",
             content:
-                "Update ${DateTime.now().toIso8601String()}\n Location: ${await BackgroundService.getCurrentGeoloaction(true)}",
+                "Update ${DateTime.now().toIso8601String()}\n Location: ${await BackgroundService.getCurrentGeoloaction(true, false)}",
           );
         }
         serviceInstace.invoke(
           'update',
           {
             "current_date":
-                "${DateTime.now().toIso8601String()}\n Current Location: ${await BackgroundService.getCurrentGeoloaction(true)}",
+                "${DateTime.now().toIso8601String()}\n Current Location: ${await BackgroundService.getCurrentGeoloaction(true, false)}",
           },
         );
       });
@@ -176,8 +176,10 @@ class BackgroundService with SharedPreferencesMixin {
     }
   }
 
-  static getCurrentGeoloaction(bool isAddressRequired) async {
-    return await GeolocationServices().getCurrentGPSLocation(isAddressRequired);
+  static getCurrentGeoloaction(
+      bool isAddressRequired, bool calculateDistance) async {
+    return await GeolocationServices()
+        .getCurrentGPSLocation(isAddressRequired, calculateDistance);
   }
 
   dynamic executeFunction(String functionName, List<dynamic> args) async {
