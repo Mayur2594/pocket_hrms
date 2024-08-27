@@ -70,7 +70,7 @@ class PunchCameraView extends StatelessWidget {
                           ),
                         ),
                         Positioned.fill(
-                          top: 400,
+                          top: 450,
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
@@ -201,7 +201,8 @@ class PunchCameraView extends StatelessWidget {
                                         )
                                       : SingleBoxShimmer(),
                                   height: 175,
-                                  padding: EdgeInsets.all(4.0),
+                                  padding:
+                                      EdgeInsets.fromLTRB(4.0, 6.0, 6.0, 4.0),
                                 ),
                               ],
                             ),

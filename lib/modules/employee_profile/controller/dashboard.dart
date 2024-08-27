@@ -24,7 +24,11 @@ class DashboardController extends GetxController with SharedPreferencesMixin {
     onInit();
   }
 
+  var profilePic =
+      "https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg".obs;
+
   Future<void> goToPunch() async {
+    AppPermissionsHandler().AllowCameraPermission();
     final cameras = await availableCameras();
     // final firstCamera = cameras.first;
     final firstCamera = cameras[1];

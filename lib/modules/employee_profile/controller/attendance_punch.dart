@@ -17,7 +17,6 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     // TODO: implement onIniths
-    AppPermissionsHandler().AllowCameraPermission();
     cameraController = CameraController(
       camera,
       ResolutionPreset.high,

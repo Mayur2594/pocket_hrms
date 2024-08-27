@@ -8,6 +8,8 @@ class AppPermissionsHandler {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.notification,
+      Permission.microphone,
+      Permission.manageExternalStorage
     ].request();
 
     if (statuses[Permission.location]!.isGranted &&
