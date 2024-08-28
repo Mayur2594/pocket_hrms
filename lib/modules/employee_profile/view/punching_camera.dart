@@ -70,7 +70,7 @@ class PunchCameraView extends StatelessWidget {
                           ),
                         ),
                         Positioned.fill(
-                          top: 450,
+                          top: 420,
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
