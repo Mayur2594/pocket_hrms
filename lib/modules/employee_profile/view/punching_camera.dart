@@ -166,7 +166,7 @@ class PunchCameraView extends StatelessWidget {
                                                       color: Colors.redAccent,
                                                     ),
                                               Text(
-                                                "Reset Location",
+                                                "Reset \n Location",
                                                 style: TextStyle(
                                                     color: Colors.redAccent),
                                               )
@@ -200,7 +200,7 @@ class PunchCameraView extends StatelessWidget {
                                                   .value['longitude']),
                                         )
                                       : SingleBoxShimmer(),
-                                  height: 175,
+                                  height: 160,
                                   padding:
                                       EdgeInsets.fromLTRB(4.0, 6.0, 6.0, 4.0),
                                 ),

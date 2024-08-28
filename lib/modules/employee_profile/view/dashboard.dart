@@ -298,6 +298,48 @@ class DashboardView extends StatelessWidget {
                             ],
                           )
                         ],
+                      )))),
+              Card.outlined(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0), // Edge-to-edge
+                  ),
+                  elevation: 10.0,
+                  child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10),
+                      child: Container(
+                          child: Column(
+                        children: [
+                          ElevatedButton(
+                              onPressed: () =>
+                                  {DashboardCtrl.allowBackgroundPermission()},
+                              child: const Text("Allow Location Prmission")),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                              onPressed: () => {
+                                    DashboardCtrl.startBackgroundService(
+                                        'gpsTrackingFromTrip')
+                                  },
+                              child: const Text("Start Service for trip")),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                              onPressed: () => {
+                                    DashboardCtrl.startBackgroundService(
+                                        'gpsTrackingFromGeoTracking')
+                                  },
+                              child: const Text("Start Service fro tracking")),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                              onPressed: () =>
+                                  {DashboardCtrl.stopBackgroundService()},
+                              child: const Text("Stop Service"))
+                        ],
                       ))))
             ],
           ))),
@@ -305,44 +347,3 @@ class DashboardView extends StatelessWidget {
     );
   }
 }
-
-
-// Column(
-//             children: [
-//               Container(
-//                   padding: const EdgeInsets.all(8.0), child: Text("Home".tr)),
-//               ElevatedButton(
-//                   onPressed: () => {DashboardCtrl.goToPunch()},
-//                   child: const Text("Punch")),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               ElevatedButton(
-//                   onPressed: () => {DashboardCtrl.allowBackgroundPermission()},
-//                   child: const Text("Allow Location Prmission")),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               ElevatedButton(
-//                   onPressed: () => {
-//                         DashboardCtrl.startBackgroundService(
-//                             'gpsTrackingFromTrip')
-//                       },
-//                   child: const Text("Start Service for trip")),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               ElevatedButton(
-//                   onPressed: () => {
-//                         DashboardCtrl.startBackgroundService(
-//                             'gpsTrackingFromGeoTracking')
-//                       },
-//                   child: const Text("Start Service fro tracking")),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               ElevatedButton(
-//                   onPressed: () => {DashboardCtrl.stopBackgroundService()},
-//                   child: const Text("Stop Service"))
-//             ],
-//           )
