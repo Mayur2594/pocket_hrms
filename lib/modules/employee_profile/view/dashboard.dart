@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pocket_hrms/modules/employee_profile/controller/dashboard.dart';
 import 'package:pocket_hrms/widgets/appbar.dart';
 import 'package:pocket_hrms/widgets/appdrawer.dart';

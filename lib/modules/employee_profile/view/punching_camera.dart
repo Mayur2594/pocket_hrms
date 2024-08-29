@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,7 +72,7 @@ class PunchCameraView extends StatelessWidget {
                           ),
                         ),
                         Positioned.fill(
-                          top: 420,
+                          top: MediaQuery.of(context).size.height * 0.5,
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
@@ -85,23 +87,33 @@ class PunchCameraView extends StatelessWidget {
                             child: Column(
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Text(
-                                            DateFormat('hh:mm:s a')
-                                                .format(DateTime.now()),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24,
-                                              color: Colors.blueGrey,
-                                            ),
-                                          ),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              4.0, 1.0, 4.0, 1.0),
+                                          child: StreamBuilder(
+                                              stream: Stream.periodic(
+                                                  Duration(seconds: 1)),
+                                              builder: (context, snapshot) {
+                                                return Text(
+                                                  DateFormat('hh:mm:ss a')
+                                                      .format(DateTime.now()),
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 24,
+                                                    color: Colors.blueGrey,
+                                                  ),
+                                                );
+                                              }),
                                         ),
                                         Container(
-                                          padding: const EdgeInsets.all(4.0),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              4.0, 1.0, 4.0, 1.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             DateFormat('EEE, d MMM, yyyy')
@@ -131,60 +143,91 @@ class PunchCameraView extends StatelessWidget {
                                                 fontWeight: FontWeight.w900),
                                           )),
                                     ),
-                                    Container(
-                                        padding: const EdgeInsets.all(0.0),
-                                        alignment: Alignment.center,
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                            PunchCtrl.simulateProcess();
-                                          },
-                                          child: Column(
-                                            children: [
-                                              PunchCtrl.isProcesing.value ==
-                                                      true
-                                                  ? AnimatedBuilder(
-                                                      builder:
-                                                          (context, child) {
-                                                        return Transform.rotate(
-                                                          angle: PunchCtrl
-                                                                  .animationController
-                                                                  .value *
-                                                              2.0 *
-                                                              3.14159, // Rotate continuously
-                                                          child: child,
-                                                        );
-                                                      },
-                                                      animation: PunchCtrl
-                                                          .animationController,
-                                                      child: const Icon(
-                                                        Icons.refresh,
-                                                        color: Colors.redAccent,
-                                                      ),
-                                                    )
-                                                  : const Icon(
-                                                      Icons.refresh,
-                                                      color: Colors.redAccent,
-                                                    ),
-                                              Text(
-                                                "Reset \n Location",
-                                                style: TextStyle(
-                                                    color: Colors.redAccent),
-                                              )
-                                            ],
-                                          ),
-                                        ))
                                   ],
                                 ),
                                 const Divider(),
                                 Container(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: PunchCtrl.LocationDetails.isNotEmpty
-                                      ? Text(
-                                          "Address: ${PunchCtrl.LocationDetails.value['address']}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w700),
-                                        )
-                                      : SingleLineShimmer(),
+                                  padding:
+                                      EdgeInsets.fromLTRB(6.0, 2.0, 6.0, 2.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex:
+                                            PunchCtrl.LocationDetails.isNotEmpty
+                                                ? 8
+                                                : 12,
+                                        child: Container(
+                                          child: PunchCtrl
+                                                  .LocationDetails.isNotEmpty
+                                              ? Text(
+                                                  "Address: ${PunchCtrl.LocationDetails.value['address']}",
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                )
+                                              : SingleLineShimmer(),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex:
+                                            PunchCtrl.LocationDetails.isNotEmpty
+                                                ? 4
+                                                : 0,
+                                        child: PunchCtrl
+                                                .LocationDetails.isNotEmpty
+                                            ? Container(
+                                                child: MaterialButton(
+                                                onPressed: () {
+                                                  PunchCtrl.simulateProcess();
+                                                },
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    PunchCtrl.isProcesing
+                                                                .value ==
+                                                            true
+                                                        ? AnimatedBuilder(
+                                                            builder: (context,
+                                                                child) {
+                                                              return Transform
+                                                                  .rotate(
+                                                                angle: PunchCtrl
+                                                                        .animationController
+                                                                        .value *
+                                                                    2.0 *
+                                                                    3.14159, // Rotate continuously
+                                                                child: child,
+                                                              );
+                                                            },
+                                                            animation: PunchCtrl
+                                                                .animationController,
+                                                            child: const Icon(
+                                                              Icons.refresh,
+                                                              color: Colors
+                                                                  .redAccent,
+                                                            ),
+                                                          )
+                                                        : const Icon(
+                                                            Icons.refresh,
+                                                            color: Colors
+                                                                .redAccent,
+                                                          ),
+                                                    Text(
+                                                      "Reset Location",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.redAccent),
+                                                    )
+                                                  ],
+                                                ),
+                                              ))
+                                            : SizedBox(
+                                                width: 0,
+                                              ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 Container(
                                   child: PunchCtrl.LocationDetails

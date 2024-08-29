@@ -1,10 +1,11 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pocket_hrms/services/permissions_handler.dart';
 import 'package:pocket_hrms/services/geolocation_services.dart';
 
 class PunchController extends GetxController with SingleGetTickerProviderMixin {
@@ -22,7 +23,6 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
       ResolutionPreset.high,
     );
     initializeControllerFuture = cameraController.initialize();
-
     super.onInit();
   }
 
@@ -68,7 +68,10 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
     LocationDetails.value = json.decode(CurrentGPLocation.toString());
 
     initialPosition.value = LatLng(
-        LocationDetails.value['latitude'], LocationDetails.value['longitude']);
+        // ignore: duplicate_ignore
+        // ignore: invalid_use_of_protected_member
+        LocationDetails.value['latitude'],
+        LocationDetails.value['longitude']);
 
     markers.add(
       Marker(
