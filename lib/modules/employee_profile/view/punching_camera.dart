@@ -135,7 +135,7 @@ class PunchCameraView extends StatelessWidget {
                                           color: Colors.green[400],
                                           elevation: 6,
                                           onPressed: () =>
-                                              {PunchCtrl.takePicture()},
+                                              {PunchCtrl.preparePunch(context)},
                                           child: Text(
                                             "PUNCH".tr,
                                             style: const TextStyle(

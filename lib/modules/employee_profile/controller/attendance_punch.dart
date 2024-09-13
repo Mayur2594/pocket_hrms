@@ -1,12 +1,15 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pocket_hrms/services/geolocation_services.dart';
+import 'package:pocket_hrms/services/facerecognization.dart';
 
 class PunchController extends GetxController with SingleGetTickerProviderMixin {
   late CameraController cameraController;
@@ -18,12 +21,13 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     // TODO: implement onIniths
+    super.onInit();
     cameraController = CameraController(
       camera,
       ResolutionPreset.high,
     );
     initializeControllerFuture = cameraController.initialize();
-    super.onInit();
+    faceRecognizationService().loadModel();
   }
 
   @override
@@ -94,9 +98,39 @@ class PunchController extends GetxController with SingleGetTickerProviderMixin {
     );
   }
 
-  Future<XFile> takePicture() async {
-    await initializeControllerFuture;
-    return await cameraController.takePicture();
+  Future<String> takePicture() async {
+    try {
+      await initializeControllerFuture;
+      final XFile image = await cameraController.takePicture();
+      String selectedImagePath = image.path;
+      if (Platform.isAndroid) {
+        return Future.value(selectedImagePath);
+      } else {
+        var selectedImageSize =
+            ((File(selectedImagePath)).lengthSync() / 1024 / 1024)
+                    .toStringAsFixed(2) +
+                " Mb";
+
+        final dir = await Directory.systemTemp;
+        final targetPath =
+            dir.absolute.path + "/${DateTime.now().millisecondsSinceEpoch}.jpg";
+        var compressedFile = await FlutterImageCompress.compressAndGetFile(
+            selectedImagePath, targetPath,
+            quality: 60);
+
+        var compressImagePath = compressedFile!.path;
+        return Future.value(compressImagePath);
+      }
+    } catch (ex) {
+      print(ex);
+      return "";
+    }
+  }
+
+  preparePunch(BuildContext context) async {
+    try {
+      var ImagePath = await takePicture();
+    } catch (ex) {}
   }
 
   late AnimationController animationController;
