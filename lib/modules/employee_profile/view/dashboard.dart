@@ -12,7 +12,7 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final DashboardController DashboardCtrl = Get.find();
     return Scaffold(
-      appBar: AppBarView(),
+      appBar: AppBarView(appBarTitle: "Home"),
       drawer: DrawerView(),
       body: RefreshIndicator(
           onRefresh: () => DashboardCtrl.refreshView(),

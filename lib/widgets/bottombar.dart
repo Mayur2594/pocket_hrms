@@ -9,9 +9,34 @@ class BottomBarController extends GetxController {
     super.onInit();
   }
 
+List<Map<dynamic, dynamic>> TabList = [
+    {
+      "title": "Home",
+      "icon":  const Icon(Icons.home_outlined),
+      "redirectUrl": "/greytrix/pockethrms/dashboard/"
+    },
+    {
+      "title": "Attendance",
+      "icon":  const Icon(Icons.fingerprint_outlined),
+      "redirectUrl": "/greytrix/pockethrms/dashboard/"
+    },
+    {
+      "title": "Calender",
+      "icon":  const Icon(Icons.event_outlined),
+      "redirectUrl": "/greytrix/pockethrms/dashboard/"
+    },
+    {
+      "title": "Profile",
+      "icon":  const Icon(Icons.person),
+      "redirectUrl": "/greytrix/pockethrms/profile/"
+    }
+];
+
   void changeTabIndex(int index) {
     currentIndex.value = index;
+    Get.toNamed(TabList[currentIndex.value]["redirectUrl"]);
   }
+  
 }
 
 class BottomBarView extends StatelessWidget implements PreferredSizeWidget {
@@ -54,24 +79,12 @@ class BottomBarView extends StatelessWidget implements PreferredSizeWidget {
             backgroundColor: Colors.transparent,
             unselectedItemColor: Colors.white54,
             selectedItemColor: Colors.white,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.fingerprint_outlined),
-                label: 'Attendance',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.event_outlined),
-                label: 'Calender',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
+            items: BottomBarCtrl.TabList.map((item) {
+          return BottomNavigationBarItem(
+            icon: item['icon'],
+            label: item['title'],
+          );
+        }).toList(),
           )),
     );
   }

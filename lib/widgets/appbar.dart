@@ -40,16 +40,22 @@ class AppBarView extends StatelessWidget
     with SharedPreferencesMixin
     implements PreferredSizeWidget {
   final AppBarController AppBarCtrl = Get.put(AppBarController());
+  final String appBarTitle;
 
-  AppBarView({super.key});
+   AppBarView({
+    Key? key,
+    this.appBarTitle = "",
+  }) : super(key: key);
+
+  // AppBarView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: Obx(() => Text(
-              AppBarCtrl.config.pageTitle.value.tr.toString().toUpperCase(),
+        title: Text(
+              appBarTitle.toString().trim().isNotEmpty? appBarTitle.tr.toString().toUpperCase():AppBarCtrl.config.pageTitle.value.tr.toString().toUpperCase(),
               style: const TextStyle(color: Colors.white),
-            )),
+            ),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 12,
         flexibleSpace: Container(
