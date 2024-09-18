@@ -28,6 +28,7 @@ class ProfileView extends StatelessWidget {
                   DynamicTextField(
                     label: 'First Name',
                     initialValue: '',
+                    isRequired:true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your First name';
@@ -54,6 +55,7 @@ class ProfileView extends StatelessWidget {
                   DynamicTextField(
                     label: 'Last Name',
                     initialValue: '',
+                    isRequired:true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your Last name';
@@ -71,8 +73,10 @@ class ProfileView extends StatelessWidget {
               SizedBox(height: 16),
 
               // Two Radio Buttons side by side
+              
             DynamicRadioButton(
                     label: 'Gender',
+                    isRequired:true,
                     options: ['Male', 'Female', 'Other', 'Not to desclosed'],
                     groupValue: ProfileCtrl.formData['gender'],
                     onSaved: (value) {
@@ -84,6 +88,7 @@ class ProfileView extends StatelessWidget {
               SizedBox(height: 16,),
               DynamicDropdown(
                     label: 'Payment Method',
+                    isRequired:true,
                     options: ['Credit Card', 'PayPal'],
                     initialValue: ProfileCtrl.formData['payment_method'],
                     onSaved: (value) {
@@ -97,6 +102,7 @@ class ProfileView extends StatelessWidget {
                 fields: [
                   DynamicSwitch(
                     label:"Active Location",
+                    isRequired:true,
                     initialValue: ProfileCtrl.formData['active_location']??false,
                     onSaved: (value) {
                       ProfileCtrl.formData['active_location'] = value;
@@ -110,8 +116,8 @@ class ProfileView extends StatelessWidget {
               DynamicCheckboxGroup(
               label: 'Hobbies',
               options: ProfileCtrl.options,
+              isRequired:true,
               onSaved: (value) {
-                 print('Updated Options: $value');
                   ProfileCtrl.formData['hobbies'] = ProfileCtrl.options;
               },
               isHorizontal: true, // Horizontal layout with wrapping after two items
@@ -119,6 +125,7 @@ class ProfileView extends StatelessWidget {
               SizedBox(height: 16),
               DynamicTextArea(
                     label: 'Address',
+                    isRequired: true,
                     initialValue: ProfileCtrl.formData['address']??null,
                     maxLine: 3,
                     validator: (value) {

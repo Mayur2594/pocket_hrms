@@ -11,10 +11,10 @@ class ProfileController extends GetxController with SharedPreferencesMixin {
   
 
 var options = <Map<dynamic, dynamic>>[
-    {"label": "Reading", "value": true},
-    {"label": "Traveling", "value": true},
-    {"label": "Cooking", "value": true},
-    {"label": "Swimming", "value": true},
+    {"label": "Reading", "value": false},
+    {"label": "Traveling", "value": false},
+    {"label": "Cooking", "value": false},
+    {"label": "Swimming", "value": false},
   ].obs;
 
   @override
@@ -32,13 +32,6 @@ var options = <Map<dynamic, dynamic>>[
 
   refreshView(){
     
-  }
-
-void toggleCheckbox(var operatedOption) {
-     
-      var index = operatedOption['index'];
-    options[index]['value'] = operatedOption['value'] == true?false:true;
-    options.refresh(); // Trigger a refresh so that the UI updates
   }
 
 }
