@@ -132,15 +132,45 @@ class PunchCameraView extends StatelessWidget {
                                       alignment: Alignment.center,
                                       child: MaterialButton(
                                           padding: const EdgeInsets.all(14),
-                                          color: Colors.green[400],
+                                          color: PunchCtrl.isPunchPreparing.value == false?Colors.green[400]:Colors.green[100],
                                           elevation: 6,
+                                          disabledColor: Colors.green[100],
                                           onPressed: () =>
-                                              {PunchCtrl.preparePunch(context)},
-                                          child: Text(
-                                            "PUNCH".tr,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w900),
+                                              {
+                                                PunchCtrl.isPunchPreparing.value == false?PunchCtrl.preparePunch(context):null
+                                              },
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "PUNCH".tr+"${PunchCtrl.isPunchPreparing.value == true?"ING":""}",
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w900),
+                                              ),
+                                             
+                                              SizedBox(width: PunchCtrl.isPunchPreparing.value == true?0.0:6.0,),
+                                              PunchCtrl.isPunchPreparing.value == true?AnimatedBuilder(
+                                                            builder: (context,
+                                                                child) {
+                                                              return Transform
+                                                                  .rotate(
+                                                                angle: PunchCtrl
+                                                                        .animationController
+                                                                        .value *
+                                                                    2.0 *
+                                                                    3.14159, // Rotate continuously
+                                                                child: child,
+                                                              );
+                                                            },
+                                                            animation: PunchCtrl
+                                                                .animationController,
+                                                            child: const Icon(
+                                                              Icons.track_changes,
+                                                              color: Colors
+                                                                  .white,
+                                                            ),
+                                                          ):SizedBox(width: 0,height: 0,)
+                                            ],
                                           )),
                                     ),
                                   ],
@@ -178,7 +208,7 @@ class PunchCameraView extends StatelessWidget {
                                             ? Container(
                                                 child: MaterialButton(
                                                 onPressed: () {
-                                                  PunchCtrl.simulateProcess();
+                                                  PunchCtrl.isPunchPreparing.value == false?PunchCtrl.simulateProcess():null;
                                                 },
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -202,22 +232,23 @@ class PunchCameraView extends StatelessWidget {
                                                             },
                                                             animation: PunchCtrl
                                                                 .animationController,
-                                                            child: const Icon(
-                                                              Icons.refresh,
-                                                              color: Colors
-                                                                  .redAccent,
+                                                            child: Icon(
+                                                              Icons.share_location,
+                                                              color: PunchCtrl.isPunchPreparing.value == false?Colors
+                                                                  .redAccent:Colors.grey,
                                                             ),
                                                           )
-                                                        : const Icon(
-                                                            Icons.refresh,
-                                                            color: Colors
-                                                                .redAccent,
+                                                        : Icon(
+                                                            Icons.share_location,
+                                                            color:  PunchCtrl.isPunchPreparing.value == false?Colors
+                                                                  .redAccent:Colors.grey,
                                                           ),
                                                     Text(
-                                                      "Reset Location",
+                                                      "Refresh",
                                                       style: TextStyle(
                                                           color:
-                                                              Colors.redAccent),
+                                                               PunchCtrl.isPunchPreparing.value == false?Colors
+                                                                  .redAccent:Colors.grey),
                                                     )
                                                   ],
                                                 ),

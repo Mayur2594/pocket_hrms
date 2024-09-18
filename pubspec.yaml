@@ -57,6 +57,7 @@ dependencies:
   flutter_image_compress: ^2.3.0
   image: ^4.2.0
   tflite_flutter: ^0.11.0
+  image_picker: ^1.1.2
 
 
  
@@ -93,6 +94,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/images/
+    - assets/mobilefacenet.tflite
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
