@@ -180,7 +180,7 @@ var isPunchPreparing = false.obs;
       var ImagePath = await takePicture();
       startAnimation();
       
-      Future.delayed(Duration(seconds: 10), () async{
+      // Future.delayed(Duration(seconds: 10), () async{
                var result = await faceRecognizationService().verifyFace(File(ImagePath));
       if(result.isNotEmpty)
       {
@@ -199,7 +199,7 @@ var isPunchPreparing = false.obs;
           
           resetAnimation();
       }
-              });
+              // });
     } catch (ex) {}
   }
 

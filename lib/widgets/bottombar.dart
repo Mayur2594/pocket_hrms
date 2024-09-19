@@ -18,7 +18,7 @@ List<Map<dynamic, dynamic>> TabList = [
     {
       "title": "Attendance",
       "icon":  const Icon(Icons.fingerprint_outlined),
-      "redirectUrl": "/greytrix/pockethrms/dashboard/"
+      "redirectUrl": "/greytrix/pockethrms/attendance/"
     },
     {
       "title": "",
@@ -27,7 +27,7 @@ List<Map<dynamic, dynamic>> TabList = [
     {
       "title": "Calender",
       "icon":  const Icon(Icons.event_outlined),
-      "redirectUrl": "/greytrix/pockethrms/dashboard/"
+      "redirectUrl": "/greytrix/pockethrms/calendar/"
     },
     {
       "title": "Profile",
