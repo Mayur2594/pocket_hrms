@@ -111,10 +111,9 @@ List _preProcessRaw(imglib.Image image, Face faceDetected) {
         }
         var interpreterOptions = InterpreterOptions()..addDelegate(delegate);
 
-        this.interpreter = await Interpreter.fromAsset('assets/mobilefacenet.tflite',
+        interpreter = await Interpreter.fromAsset('assets/mobilefacenet.tflite',
             options: interpreterOptions);
        
-        /// runs and transforms the data 🤖
         interpreter.run(input, output);
         output = output.reshape([192]);
 
