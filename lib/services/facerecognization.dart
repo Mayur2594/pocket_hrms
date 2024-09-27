@@ -7,6 +7,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:pocket_hrms/mixins/shared_preferences_mixin.dart';
 
+// ignore: camel_case_types
 class faceRecognizationService with SharedPreferencesMixin{
   final FaceDetector _faceDetector = GoogleMlKit.vision.faceDetector();
 
@@ -141,7 +142,6 @@ List _preProcessRaw(imglib.Image image, Face faceDetected) {
   Future<Map<String, dynamic>> verifyFace(File currentImageFile) async {
 
     try{
-       double minDist = 999;
        double currDist = 0.0;
        double threshold = 1.0;
     var face = await getFacesFromRawImage(currentImageFile);
@@ -157,7 +157,7 @@ List _preProcessRaw(imglib.Image image, Face faceDetected) {
 
             for(var i = 0 ; i < keys.length;i++)
             {
-                currDist = euclideanDistance(predictedData as List, savedImg[keys[i]] as List);
+                currDist = euclideanDistance(predictedData, savedImg[keys[i]] as List);
                 // await saveValue("faceImages", predictedData.toString().trim());
                 if(currDist < threshold)
                 {
