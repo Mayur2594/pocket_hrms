@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '2.0.0'
+    ext.kotlin_version = '2.0.20'
     repositories {
         google()
         mavenCentral()
@@ -14,12 +14,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-    configurations.all {
-        resolutionStrategy {
-            force 'com.google.firebase:firebase-iid:20.2.4' // Or any version that resolves conflicts
-            force 'com.google.firebase:firebase-messaging:23.0.0' // Ensure all Firebase libraries are compatible
-        }
     }
 }
 

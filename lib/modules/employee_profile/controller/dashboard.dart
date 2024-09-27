@@ -28,7 +28,9 @@ class DashboardController extends GetxController with SharedPreferencesMixin {
       "https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg".obs;
 
   Future<void> goToPunch() async {
-    AppPermissionsHandler().AllowCameraPermission();
+    await AppPermissionsHandler().AllowCameraPermission();
+
+    Future.delayed(const Duration(seconds: 2));
     final cameras = await availableCameras();
     // final firstCamera = cameras.first;
     final firstCamera = cameras[1];

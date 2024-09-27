@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pocket_hrms/modules/employee_profile/controller/dashboard.dart';
 import 'package:pocket_hrms/widgets/appbar.dart';
 import 'package:pocket_hrms/widgets/appdrawer.dart';
@@ -13,7 +12,7 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final DashboardController DashboardCtrl = Get.find();
     return Scaffold(
-      appBar: AppBarView(),
+      appBar: AppBarView(appBarTitle: "Home"),
       drawer: DrawerView(),
       body: RefreshIndicator(
           onRefresh: () => DashboardCtrl.refreshView(),
