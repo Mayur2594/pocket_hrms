@@ -79,7 +79,7 @@ List _preProcessRaw(imglib.Image image, Face faceDetected) {
 
   Future<List> setCurrentPredictionRaw(
       imglib.Image cameraImage, Face face) async{
-    /// crops the face from the image and transforms it to an array of data
+    // crops the face from the image and transforms it to an array of data
     try
     {
       List input = _preProcessRaw(cameraImage, face);
